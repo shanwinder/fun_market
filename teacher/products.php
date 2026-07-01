@@ -1,0 +1,55 @@
+<?php
+
+declare(strict_types=1);
+
+require_once __DIR__ . '/../includes/auth.php';
+
+require_teacher();
+$activityId = selected_activity_id();
+$activity = $activityId ? activity_by_id($activityId) : null;
+$products = [];
+
+if ($activity) {
+    $stmt = db()->prepare('SELECT * FROM products WHERE activity_id = ? ORDER BY sort_order ASC, product_name ASC');
+    $stmt->execute([$activity['id']]);
+    $products = $stmt->fetchAll();
+}
+
+$pageTitle = 'จัดการสินค้า';
+require_once __DIR__ . '/../includes/header.php';
+?>
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <div>
+        <h1 class="page-title mb-1">สินค้า</h1>
+        <p class="text-muted mb-0"><?= $activity ? h($activity['title']) : 'ยังไม่มีกิจกรรม' ?></p>
+    </div>
+    <a class="btn btn-primary <?= $activity ? '' : 'disabled' ?>" href="<?= h(url('teacher/product_form.php')) ?>">เพิ่มสินค้า</a>
+</div>
+<?php if (!$activity): ?>
+    <div class="alert alert-info">กรุณาสร้างกิจกรรมก่อน</div>
+<?php else: ?>
+    <div class="panel p-3">
+        <div class="table-responsive">
+            <table class="table align-middle" data-table>
+                <thead><tr><th>รูป</th><th>สินค้า</th><th class="text-end">ราคา</th><th>สถานะ</th><th>QR Token</th><th></th></tr></thead>
+                <tbody>
+                <?php foreach ($products as $product): ?>
+                    <tr>
+                        <td><img src="<?= h(product_image_url($product['image_path'])) ?>" alt="" style="width:72px;height:54px;object-fit:cover;border-radius:8px"></td>
+                        <td class="fw-semibold"><?= h($product['product_name']) ?></td>
+                        <td class="text-end"><?= money($product['price']) ?></td>
+                        <td><?= $product['is_active'] ? '<span class="badge text-bg-success">เปิด</span>' : '<span class="badge text-bg-secondary">ปิด</span>' ?></td>
+                        <td><code><?= h($product['qr_token']) ?></code></td>
+                        <td class="text-end">
+                            <a class="btn btn-sm btn-outline-primary" href="<?= h(url('student/product.php?token=' . $product['qr_token'])) ?>">ดูหน้าสินค้า</a>
+                            <a class="btn btn-sm btn-outline-secondary" href="<?= h(url('teacher/product_form.php?id=' . $product['id'])) ?>">แก้ไข</a>
+                        </td>
+                    </tr>
+                <?php endforeach; ?>
+                </tbody>
+            </table>
+        </div>
+    </div>
+<?php endif; ?>
+<?php require_once __DIR__ . '/../includes/footer.php'; ?>
+

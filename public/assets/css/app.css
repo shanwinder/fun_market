@@ -1,0 +1,111 @@
+:root {
+    --market-ink: #24313f;
+    --market-blue: #2f6fed;
+    --market-green: #16855b;
+    --market-yellow: #f2b705;
+    --market-red: #d94b4b;
+    --market-bg: #f7f9fc;
+}
+
+body {
+    background: var(--market-bg);
+    color: var(--market-ink);
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+}
+
+.navbar-brand {
+    color: var(--market-blue);
+}
+
+.page-title {
+    font-size: clamp(1.6rem, 3vw, 2.4rem);
+    font-weight: 800;
+}
+
+.stat-card,
+.panel,
+.product-card,
+.group-button {
+    background: #fff;
+    border: 1px solid #e4e9f2;
+    border-radius: 8px;
+    box-shadow: 0 8px 24px rgba(36, 49, 63, 0.06);
+}
+
+.stat-card {
+    padding: 1.25rem;
+    min-height: 118px;
+}
+
+.stat-value {
+    font-size: 1.9rem;
+    line-height: 1.1;
+    font-weight: 800;
+}
+
+.student-shell {
+    background: linear-gradient(180deg, #f7fbff 0%, #fff 45%, #f7f9fc 100%);
+}
+
+.student-action {
+    min-height: 72px;
+    font-size: 1.25rem;
+    font-weight: 800;
+}
+
+.money-badge {
+    display: inline-flex;
+    align-items: center;
+    border-radius: 999px;
+    padding: .45rem .9rem;
+    background: #eaf7f1;
+    color: #07583c;
+    font-weight: 800;
+}
+
+.product-image {
+    width: 100%;
+    aspect-ratio: 4 / 3;
+    object-fit: cover;
+    background: #eef2f7;
+    border-radius: 8px;
+}
+
+.qr-card {
+    break-inside: avoid;
+    page-break-inside: avoid;
+}
+
+.display-board {
+    min-height: 100vh;
+    background: #0f172a;
+    color: #f8fafc;
+}
+
+.display-board main {
+    max-width: 1400px;
+}
+
+.display-card {
+    background: #17233b;
+    border: 1px solid rgba(255, 255, 255, .12);
+    border-radius: 8px;
+}
+
+@media print {
+    .navbar,
+    .no-print,
+    .btn {
+        display: none !important;
+    }
+
+    body,
+    main.container {
+        background: #fff;
+    }
+
+    .qr-card {
+        box-shadow: none;
+    }
+}
+
