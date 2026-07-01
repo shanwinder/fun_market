@@ -1019,6 +1019,14 @@ svg {
     background: #fff;
 }
 
+.fm-qr-product-image {
+    width: 100%;
+    aspect-ratio: 4 / 3;
+    object-fit: cover;
+    border-radius: var(--fm-radius);
+    background: #eef2f7;
+}
+
 .display-board {
     min-height: 100vh;
     background:
@@ -1437,6 +1445,10 @@ svg {
 }
 
 @media print {
+    @page {
+        margin: 10mm;
+    }
+
     .fm-navbar,
     .navbar,
     .no-print,
@@ -1452,6 +1464,14 @@ svg {
         color: #000 !important;
     }
 
+    .fm-main,
+    main.container {
+        width: 100% !important;
+        max-width: none !important;
+        margin: 0 !important;
+        padding: 0 !important;
+    }
+
     .panel,
     .fm-panel,
     .stat-card,
@@ -1461,5 +1481,51 @@ svg {
         border: 1px solid #ddd !important;
         box-shadow: none !important;
         break-inside: avoid;
+    }
+
+    .fm-qr-print-grid {
+        display: grid !important;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 8mm !important;
+        margin-bottom: 10mm !important;
+    }
+
+    .fm-qr-group-grid {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+    .fm-qr-print-col {
+        width: auto !important;
+        max-width: none !important;
+        padding: 0 !important;
+        break-inside: avoid;
+        page-break-inside: avoid;
+    }
+
+    .fm-qr-card {
+        height: auto !important;
+        padding: 4mm !important;
+        overflow: hidden;
+    }
+
+    .fm-qr-card h3 {
+        font-size: 14pt !important;
+        line-height: 1.25;
+        margin-bottom: 2mm !important;
+    }
+
+    .fm-qr-product-image {
+        max-height: 34mm;
+        margin-bottom: 3mm !important;
+    }
+
+    .fm-qr-image {
+        width: 38mm !important;
+        height: 38mm !important;
+        padding: 1mm;
+    }
+
+    .fm-qr-card .small {
+        display: none;
     }
 }

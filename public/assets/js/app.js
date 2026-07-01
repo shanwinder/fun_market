@@ -6,7 +6,18 @@ document.addEventListener('DOMContentLoaded', () => {
     document.querySelectorAll('[data-table]').forEach((table) => {
         if (!window.DataTable || table.dataset.fmTableReady === '1') return;
         table.dataset.fmTableReady = '1';
-        new DataTable(table, {
+        let order = null;
+        if (table.dataset.tableOrder) {
+            try {
+                order = JSON.parse(table.dataset.tableOrder);
+            } catch (error) {
+                order = null;
+            }
+        } else if (table.dataset.tablePreserveOrder === '1') {
+            order = [];
+        }
+
+        const options = {
             pageLength: 25,
             language: {
                 search: 'ค้นหา:',
@@ -16,7 +27,13 @@ document.addEventListener('DOMContentLoaded', () => {
                 zeroRecords: 'ไม่พบข้อมูล',
                 paginate: { first: 'แรก', last: 'ท้าย', next: 'ถัดไป', previous: 'ก่อนหน้า' }
             }
-        });
+        };
+
+        if (order !== null) {
+            options.order = order;
+        }
+
+        new DataTable(table, options);
     });
 
     document.querySelectorAll('[data-count]').forEach((element) => {

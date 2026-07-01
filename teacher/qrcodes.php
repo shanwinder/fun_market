@@ -11,9 +11,10 @@ $products = [];
 $groups = [];
 
 if ($activity) {
-    $stmt = db()->prepare("SELECT * FROM products WHERE activity_id = ? AND is_active = 1 ORDER BY sort_order ASC, product_name ASC");
+    $stmt = db()->prepare("SELECT * FROM products WHERE activity_id = ? AND is_active = 1 ORDER BY product_name ASC, sort_order ASC, id ASC");
     $stmt->execute([$activity['id']]);
     $products = $stmt->fetchAll();
+    sort_products_by_thai_name($products);
 
     $stmt = db()->prepare("SELECT * FROM student_groups WHERE activity_id = ? AND is_active = 1 ORDER BY group_name ASC");
     $stmt->execute([$activity['id']]);
@@ -34,12 +35,12 @@ require_once __DIR__ . '/../includes/header.php';
     <div class="alert alert-info">กรุณาสร้างกิจกรรมก่อน</div>
 <?php else: ?>
     <h2 class="h4 fw-bold mb-3">บัตรสินค้า</h2>
-    <div class="row g-3 mb-5">
+    <div class="row g-3 mb-5 fm-qr-print-grid fm-qr-product-grid">
         <?php foreach ($products as $product): ?>
             <?php $target = BASE_URL . '/student/product.php?token=' . rawurlencode($product['qr_token']); ?>
-            <div class="col-sm-6 col-lg-4">
+            <div class="col-sm-6 col-lg-4 fm-qr-print-col">
                 <div class="fm-qr-card panel p-3 h-100 text-center">
-                    <img src="<?= h(product_image_url($product['image_path'])) ?>" class="product-image mb-3" alt="" loading="lazy" decoding="async">
+                    <img src="<?= h(product_image_url($product['image_path'])) ?>" class="fm-qr-product-image mb-3" alt="" loading="lazy" decoding="async">
                     <h3 class="h4 fw-bold"><?= h($product['product_name']) ?></h3>
                     <div class="fs-5 mb-3"><?= money($product['price']) ?></div>
                     <img class="fm-qr-image" src="<?= h(qr_image_url($target, 260)) ?>" alt="QR Code" width="220" height="220">
@@ -50,10 +51,10 @@ require_once __DIR__ . '/../includes/header.php';
     </div>
 
     <h2 class="h4 fw-bold mb-3">QR เข้ากลุ่ม</h2>
-    <div class="row g-3">
+    <div class="row g-3 fm-qr-print-grid fm-qr-group-grid">
         <?php foreach ($groups as $group): ?>
             <?php $target = BASE_URL . '/qrcode/group.php?token=' . rawurlencode($group['public_token']); ?>
-            <div class="col-sm-6 col-lg-3">
+            <div class="col-sm-6 col-lg-3 fm-qr-print-col">
                 <div class="fm-qr-card panel p-3 h-100 text-center">
                     <h3 class="h4 fw-bold"><?= h($group['group_name']) ?></h3>
                     <div class="mb-2">PIN: <code><?= h($group['group_pin']) ?></code></div>

@@ -173,5 +173,35 @@ function require_student_group(): array
 
 function qr_image_url(string $targetUrl, int $size = 240): string
 {
-    return 'https://api.qrserver.com/v1/create-qr-code/?size=' . $size . 'x' . $size . '&data=' . rawurlencode($targetUrl);
+    return url('public/qrcode.php?size=' . (int) $size . '&data=' . rawurlencode($targetUrl));
+}
+
+function sort_products_by_thai_name(array &$products): void
+{
+    static $collator = null;
+
+    if ($collator === null && class_exists(Collator::class)) {
+        $collator = new Collator('th_TH');
+        $collator->setAttribute(Collator::NUMERIC_COLLATION, Collator::ON);
+    }
+
+    usort($products, static function (array $left, array $right) use (&$collator): int {
+        $leftName = trim((string) ($left['product_name'] ?? ''));
+        $rightName = trim((string) ($right['product_name'] ?? ''));
+
+        if ($collator instanceof Collator) {
+            $nameOrder = $collator->compare($leftName, $rightName);
+            if ($nameOrder !== false && $nameOrder !== 0) {
+                return $nameOrder;
+            }
+        } else {
+            $nameOrder = strnatcasecmp($leftName, $rightName);
+            if ($nameOrder !== 0) {
+                return $nameOrder;
+            }
+        }
+
+        return ((int) ($left['sort_order'] ?? 0) <=> (int) ($right['sort_order'] ?? 0))
+            ?: ((int) ($left['id'] ?? 0) <=> (int) ($right['id'] ?? 0));
+    });
 }

@@ -26,10 +26,17 @@ require_once __DIR__ . '/../includes/header.php';
         </div>
     </div>
 </div>
-<script src="https://unpkg.com/html5-qrcode@2.3.8/html5-qrcode.min.js"></script>
+<script src="<?= h(url('public/assets/vendor/html5-qrcode/html5-qrcode.min.js')) ?>"></script>
 <script>
     window.addEventListener('load', () => {
-        if (!window.Html5QrcodeScanner) return;
+        if (!window.Html5QrcodeScanner) {
+            const reader = document.getElementById('reader');
+            if (reader) {
+                reader.innerHTML = '<div class="alert alert-warning mb-0">ไม่สามารถโหลดระบบสแกน QR ได้ กรุณาแจ้งครู หรือใช้แอปกล้องของเครื่องสแกน QR Code แทน</div>';
+            }
+            return;
+        }
+
         const scanner = new Html5QrcodeScanner('reader', { fps: 10, qrbox: { width: 250, height: 250 } }, false);
         scanner.render((decodedText) => {
             if (decodedText.startsWith('http')) {

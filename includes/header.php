@@ -22,7 +22,7 @@ $navItems = $teacher ? [
     ['teacher/dashboard.php', 'layout-dashboard', 'Dashboard', ['teacher/live_orders.php', 'teacher/reset_activity.php']],
     ['teacher/activities.php', 'calendar-days', 'กิจกรรม', ['teacher/activity_form.php']],
     ['teacher/groups.php', 'users', 'กลุ่ม', ['teacher/group_form.php', 'teacher/group_detail.php']],
-    ['teacher/products.php', 'shopping-bag', 'สินค้า', ['teacher/product_form.php']],
+    ['teacher/products.php', 'shopping-bag', 'สินค้า', ['teacher/product_form.php', 'teacher/product_preview.php']],
     ['teacher/qrcodes.php', 'qr-code', 'QR Code', []],
     ['teacher/reports.php', 'bar-chart-3', 'รายงาน', []],
 ] : [
