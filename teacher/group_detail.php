@@ -42,17 +42,17 @@ require_once __DIR__ . '/../includes/header.php';
         <h1 class="page-title mb-1"><?= h($group['group_name']) ?></h1>
         <p class="text-muted mb-0"><?= h($group['activity_title']) ?></p>
     </div>
-    <a class="btn btn-outline-secondary" href="<?= h(url('teacher/groups.php')) ?>">กลับ</a>
+    <a class="btn btn-outline-secondary fm-btn-icon" href="<?= h(url('teacher/groups.php')) ?>"><i data-lucide="arrow-left"></i>กลับ</a>
 </div>
 <div class="row g-3 mb-4">
-    <div class="col-md-4"><div class="stat-card"><div class="text-muted">เงินตั้งต้น</div><div class="stat-value"><?= money($group['initial_budget']) ?></div></div></div>
-    <div class="col-md-4"><div class="stat-card"><div class="text-muted">ใช้ไป</div><div class="stat-value"><?= money((float) $group['initial_budget'] - (float) $group['current_balance']) ?></div></div></div>
-    <div class="col-md-4"><div class="stat-card"><div class="text-muted">คงเหลือ</div><div class="stat-value"><?= money($group['current_balance']) ?></div></div></div>
+    <div class="col-md-4"><div class="stat-card"><div class="fm-stat-label">เงินตั้งต้น</div><div class="stat-value"><?= money($group['initial_budget']) ?></div></div></div>
+    <div class="col-md-4"><div class="stat-card fm-stat-card-orders"><div class="fm-stat-label">ใช้ไป</div><div class="stat-value"><?= money((float) $group['initial_budget'] - (float) $group['current_balance']) ?></div></div></div>
+    <div class="col-md-4"><div class="stat-card fm-stat-card-items"><div class="fm-stat-label">คงเหลือ</div><div class="stat-value"><?= money($group['current_balance']) ?></div></div></div>
 </div>
 <div class="panel p-3 mb-4">
     <h2 class="h4 fw-bold mb-3">รายการที่ซื้อ</h2>
     <div class="table-responsive">
-        <table class="table align-middle" data-table>
+        <table class="table align-middle fm-table" data-table>
             <thead><tr><th>เวลา</th><th>รายการ</th><th class="text-end">ยอดซื้อ</th><th class="text-end">หลังซื้อ</th></tr></thead>
             <tbody>
             <?php foreach ($orders as $order): ?>
@@ -70,7 +70,7 @@ require_once __DIR__ . '/../includes/header.php';
 <div class="panel p-3">
     <h2 class="h4 fw-bold mb-3">ประวัติเงิน</h2>
     <div class="table-responsive">
-        <table class="table align-middle">
+        <table class="table align-middle fm-table">
             <thead><tr><th>เวลา</th><th>ประเภท</th><th class="text-end">เปลี่ยนแปลง</th><th class="text-end">ก่อน</th><th class="text-end">หลัง</th><th>หมายเหตุ</th></tr></thead>
             <tbody>
             <?php foreach ($transactions as $tx): ?>
@@ -88,4 +88,3 @@ require_once __DIR__ . '/../includes/header.php';
     </div>
 </div>
 <?php require_once __DIR__ . '/../includes/footer.php'; ?>
-

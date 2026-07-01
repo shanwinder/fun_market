@@ -28,30 +28,37 @@ require_once __DIR__ . '/../includes/header.php';
 ?>
 <div class="row justify-content-center">
     <div class="col-lg-6">
-        <div class="product-card p-3">
-            <img class="product-image mb-3" src="<?= h(product_image_url($product['image_path'])) ?>" alt="<?= h($product['product_name']) ?>">
-            <h1 class="page-title mb-2"><?= h($product['product_name']) ?></h1>
-            <?php if (!empty($product['description'])): ?>
-                <p class="text-muted"><?= h($product['description']) ?></p>
-            <?php endif; ?>
-            <div class="fs-2 fw-bold mb-3"><?= money($product['price']) ?></div>
+        <div class="fm-product-detail">
+            <img class="fm-product-image-lg" src="<?= h(product_image_url($product['image_path'])) ?>" alt="<?= h($product['product_name']) ?>" loading="lazy" decoding="async">
+            <div class="p-4">
+                <h1 class="page-title mb-2"><?= h($product['product_name']) ?></h1>
+                <?php if (!empty($product['description'])): ?>
+                    <p class="text-muted fs-5"><?= h($product['description']) ?></p>
+                <?php endif; ?>
+                <div class="fm-price-badge mb-4">
+                    <i data-lucide="coins"></i>
+                    <?= money($product['price']) ?>
+                </div>
             <form method="post" action="<?= h(url('actions/add_to_cart.php')) ?>">
                 <?= csrf_field() ?>
                 <input type="hidden" name="product_id" value="<?= h($product['id']) ?>">
                 <label class="form-label fs-5 fw-bold">จำนวน</label>
-                <div class="input-group input-group-lg mb-3">
-                    <button class="btn btn-outline-secondary" type="button" onclick="this.parentElement.querySelector('input').stepDown()">-</button>
-                    <input class="form-control text-center" type="number" name="quantity" min="1" max="20" value="1" required>
-                    <button class="btn btn-outline-secondary" type="button" onclick="this.parentElement.querySelector('input').stepUp()">+</button>
+                <div class="fm-qty-selector mb-4" data-qty-selector>
+                    <button class="fm-qty-btn" type="button" data-qty-action="decrement" aria-label="ลดจำนวน"><i data-lucide="minus"></i></button>
+                    <input class="fm-qty-input" type="number" name="quantity" min="1" max="20" value="1" required aria-label="จำนวนสินค้า">
+                    <button class="fm-qty-btn" type="button" data-qty-action="increment" aria-label="เพิ่มจำนวน"><i data-lucide="plus"></i></button>
                 </div>
-                <button class="btn btn-success btn-lg w-100 student-action">เพิ่มลงตะกร้า</button>
+                <button class="btn btn-success btn-lg w-100 student-action fm-btn-icon">
+                    <i data-lucide="shopping-cart"></i>
+                    เพิ่มลงตะกร้า
+                </button>
             </form>
+            </div>
         </div>
         <div class="d-grid gap-2 mt-3">
-            <a class="btn btn-outline-primary btn-lg" href="<?= h(url('student/cart.php')) ?>">ดูตะกร้า</a>
-            <a class="btn btn-outline-secondary btn-lg" href="<?= h(url('student/scan.php')) ?>">สแกนต่อ</a>
+            <a class="btn btn-outline-primary btn-lg fm-btn-icon justify-content-center" href="<?= h(url('student/cart.php')) ?>"><i data-lucide="shopping-basket"></i>ดูตะกร้า</a>
+            <a class="btn btn-outline-secondary btn-lg fm-btn-icon justify-content-center" href="<?= h(url('student/scan.php')) ?>"><i data-lucide="scan-line"></i>สแกนต่อ</a>
         </div>
     </div>
 </div>
 <?php require_once __DIR__ . '/../includes/footer.php'; ?>
-

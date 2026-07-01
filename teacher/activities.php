@@ -16,11 +16,11 @@ require_once __DIR__ . '/../includes/header.php';
         <h1 class="page-title mb-1">กิจกรรม</h1>
         <p class="text-muted mb-0">สร้าง เปิดใช้งาน หรือปิดกิจกรรมการเรียนรู้</p>
     </div>
-    <a class="btn btn-primary" href="<?= h(url('teacher/activity_form.php')) ?>">เพิ่มกิจกรรม</a>
+    <a class="btn btn-primary fm-btn-icon" href="<?= h(url('teacher/activity_form.php')) ?>"><i data-lucide="plus-circle"></i>เพิ่มกิจกรรม</a>
 </div>
 <div class="panel p-3">
     <div class="table-responsive">
-        <table class="table align-middle" data-table>
+        <table class="table align-middle fm-table" data-table>
             <thead><tr><th>ชื่อกิจกรรม</th><th>สถานะ</th><th>ผู้สร้าง</th><th>สร้างเมื่อ</th><th></th></tr></thead>
             <tbody>
             <?php foreach ($activities as $activity): ?>
@@ -30,8 +30,8 @@ require_once __DIR__ . '/../includes/header.php';
                     <td><?= h($activity['full_name']) ?></td>
                     <td><?= h($activity['created_at']) ?></td>
                     <td class="text-end">
-                        <a class="btn btn-sm btn-outline-primary" href="<?= h(url('teacher/dashboard.php?activity_id=' . $activity['id'])) ?>">ใช้กิจกรรมนี้</a>
-                        <a class="btn btn-sm btn-outline-secondary" href="<?= h(url('teacher/activity_form.php?id=' . $activity['id'])) ?>">แก้ไข</a>
+                        <a class="btn btn-sm btn-outline-primary fm-btn-icon" href="<?= h(url('teacher/dashboard.php?activity_id=' . $activity['id'])) ?>"><i data-lucide="check-circle-2"></i>ใช้กิจกรรมนี้</a>
+                        <a class="btn btn-sm btn-outline-secondary fm-btn-icon" href="<?= h(url('teacher/activity_form.php?id=' . $activity['id'])) ?>"><i data-lucide="pencil"></i>แก้ไข</a>
                     </td>
                 </tr>
             <?php endforeach; ?>
@@ -40,4 +40,3 @@ require_once __DIR__ . '/../includes/header.php';
     </div>
 </div>
 <?php require_once __DIR__ . '/../includes/footer.php'; ?>
-

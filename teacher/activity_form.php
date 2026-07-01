@@ -15,8 +15,8 @@ require_once __DIR__ . '/../includes/header.php';
 ?>
 <div class="row justify-content-center">
     <div class="col-lg-8">
-        <div class="panel p-4">
-            <h1 class="h3 fw-bold mb-3"><?= h($pageTitle) ?></h1>
+        <div class="fm-form-section">
+            <h1 class="h3 fw-bold mb-3"><i data-lucide="calendar-days" class="me-2"></i><?= h($pageTitle) ?></h1>
             <form method="post" action="<?= h(url('actions/teacher_save_activity.php')) ?>">
                 <?= csrf_field() ?>
                 <input type="hidden" name="id" value="<?= h($activity['id'] ?? '') ?>">
@@ -38,12 +38,11 @@ require_once __DIR__ . '/../includes/header.php';
                     <div class="form-text">ถ้าเลือก “กำลังใช้งาน” ระบบจะปิด active ของกิจกรรมอื่นอัตโนมัติ</div>
                 </div>
                 <div class="d-flex gap-2">
-                    <button class="btn btn-primary">บันทึก</button>
-                    <a class="btn btn-outline-secondary" href="<?= h(url('teacher/activities.php')) ?>">กลับ</a>
+                    <button class="btn btn-primary fm-btn-icon"><i data-lucide="save"></i>บันทึก</button>
+                    <a class="btn btn-outline-secondary fm-btn-icon" href="<?= h(url('teacher/activities.php')) ?>"><i data-lucide="arrow-left"></i>กลับ</a>
                 </div>
             </form>
         </div>
     </div>
 </div>
 <?php require_once __DIR__ . '/../includes/footer.php'; ?>
-

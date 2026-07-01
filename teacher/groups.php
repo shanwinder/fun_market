@@ -33,14 +33,14 @@ require_once __DIR__ . '/../includes/header.php';
         <h1 class="page-title mb-1">กลุ่มนักเรียน</h1>
         <p class="text-muted mb-0"><?= $activity ? h($activity['title']) : 'ยังไม่มีกิจกรรม' ?></p>
     </div>
-    <a class="btn btn-primary <?= $activity ? '' : 'disabled' ?>" href="<?= h(url('teacher/group_form.php')) ?>">เพิ่มกลุ่ม</a>
+    <a class="btn btn-primary fm-btn-icon <?= $activity ? '' : 'disabled' ?>" href="<?= h(url('teacher/group_form.php')) ?>"><i data-lucide="plus-circle"></i>เพิ่มกลุ่ม</a>
 </div>
 <?php if (!$activity): ?>
     <div class="alert alert-info">กรุณาสร้างกิจกรรมก่อน</div>
 <?php else: ?>
     <div class="panel p-3">
         <div class="table-responsive">
-            <table class="table align-middle" data-table>
+            <table class="table align-middle fm-table" data-table>
                 <thead><tr><th>กลุ่ม</th><th>PIN</th><th class="text-end">ตั้งต้น</th><th class="text-end">ใช้ไป</th><th class="text-end">คงเหลือ</th><th>สถานะ</th><th></th></tr></thead>
                 <tbody>
                 <?php foreach ($groups as $group): ?>
@@ -52,8 +52,8 @@ require_once __DIR__ . '/../includes/header.php';
                         <td class="text-end fw-bold"><?= money($group['current_balance']) ?></td>
                         <td><?= $group['is_active'] ? '<span class="badge text-bg-success">เปิด</span>' : '<span class="badge text-bg-secondary">ปิด</span>' ?></td>
                         <td class="text-end">
-                            <a class="btn btn-sm btn-outline-primary" href="<?= h(url('teacher/group_detail.php?id=' . $group['id'])) ?>">ดู</a>
-                            <a class="btn btn-sm btn-outline-secondary" href="<?= h(url('teacher/group_form.php?id=' . $group['id'])) ?>">แก้ไข</a>
+                            <a class="btn btn-sm btn-outline-primary fm-btn-icon" href="<?= h(url('teacher/group_detail.php?id=' . $group['id'])) ?>"><i data-lucide="eye"></i>ดู</a>
+                            <a class="btn btn-sm btn-outline-secondary fm-btn-icon" href="<?= h(url('teacher/group_form.php?id=' . $group['id'])) ?>"><i data-lucide="pencil"></i>แก้ไข</a>
                         </td>
                     </tr>
                 <?php endforeach; ?>
@@ -63,4 +63,3 @@ require_once __DIR__ . '/../includes/header.php';
     </div>
 <?php endif; ?>
 <?php require_once __DIR__ . '/../includes/footer.php'; ?>
-

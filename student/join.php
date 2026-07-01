@@ -44,26 +44,35 @@ if ($activity) {
 $pageTitle = 'เลือกกลุ่ม';
 $bodyClass = 'student-shell';
 require_once __DIR__ . '/../includes/header.php';
+$groupEmojis = ['🥩', '🥬', '🍊', '🍚', '🥛', '⭐', '🎒', '🌈'];
 ?>
 <div class="row justify-content-center">
-    <div class="col-lg-8">
+    <div class="col-lg-9">
         <div class="text-center mb-4">
+            <div class="fm-overline mb-2">ตลาดอาหาร 5 หมู่</div>
             <h1 class="page-title">เลือกกลุ่มของฉัน</h1>
             <?php if ($activity): ?><p class="text-muted mb-0"><?= h($activity['title']) ?></p><?php endif; ?>
         </div>
         <?php if (!$activity): ?>
-            <div class="alert alert-info text-center">ยังไม่มีกิจกรรมที่เปิดใช้งาน</div>
+            <div class="fm-panel p-4 text-center">
+                <i data-lucide="calendar-x" class="text-primary mb-3" style="width:48px;height:48px"></i>
+                <p class="fs-4 text-muted mb-0">ยังไม่มีกิจกรรมที่เปิดใช้งาน</p>
+            </div>
         <?php else: ?>
-            <div class="row g-3">
-                <?php foreach ($groups as $group): ?>
+            <div class="row g-3 fm-stagger">
+                <?php foreach ($groups as $index => $group): ?>
                     <div class="col-md-6">
-                        <form class="group-button p-3 h-100" method="post">
+                        <form class="fm-group-card h-100" method="post" aria-label="เข้ากลุ่ม <?= h($group['group_name']) ?>">
                             <?= csrf_field() ?>
                             <input type="hidden" name="group_id" value="<?= h($group['id']) ?>">
-                            <h2 class="h3 fw-bold"><?= h($group['group_name']) ?></h2>
-                            <label class="form-label mt-2">ใส่ PIN กลุ่ม</label>
-                            <input class="form-control form-control-lg text-center" name="group_pin" inputmode="numeric" autocomplete="off" required>
-                            <button class="btn btn-primary btn-lg w-100 mt-3 student-action">เข้ากลุ่ม</button>
+                            <span class="fm-group-emoji" aria-hidden="true"><?= h($groupEmojis[$index % count($groupEmojis)]) ?></span>
+                            <h2 class="fm-group-name"><?= h($group['group_name']) ?></h2>
+                            <label class="form-label mt-3">ใส่ PIN กลุ่ม</label>
+                            <input class="form-control fm-pin-input" name="group_pin" inputmode="numeric" autocomplete="off" required aria-label="PIN ของ <?= h($group['group_name']) ?>">
+                            <button class="btn btn-primary btn-lg w-100 mt-3 student-action fm-btn-icon">
+                                <i data-lucide="door-open"></i>
+                                เข้ากลุ่ม
+                            </button>
                         </form>
                     </div>
                 <?php endforeach; ?>
@@ -72,4 +81,3 @@ require_once __DIR__ . '/../includes/header.php';
     </div>
 </div>
 <?php require_once __DIR__ . '/../includes/footer.php'; ?>
-

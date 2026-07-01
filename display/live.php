@@ -28,14 +28,20 @@ $pageTitle = 'ความเคลื่อนไหวล่าสุด';
 $bodyClass = 'display-board';
 require_once __DIR__ . '/../includes/header.php';
 ?>
-<h1 class="page-title mb-4">ความเคลื่อนไหวล่าสุด</h1>
-<div class="row g-3">
+<div class="d-flex flex-wrap justify-content-between align-items-center gap-3 mb-4">
+    <div>
+        <h1 class="page-title mb-1">ความเคลื่อนไหวล่าสุด</h1>
+        <p class="text-light-emphasis mb-0">รีเฟรชทุก 8 วินาที</p>
+    </div>
+    <a class="btn btn-outline-light no-print fm-btn-icon" href="<?= h(url('display/summary.php')) ?>"><i data-lucide="monitor"></i>จอรวม</a>
+</div>
+<div class="row g-3 fm-stagger">
     <?php foreach ($orders as $order): ?>
         <div class="col-lg-6">
             <div class="display-card p-4">
                 <div class="d-flex justify-content-between gap-3">
-                    <h2 class="h3 fw-bold"><?= h($order['group_name']) ?></h2>
-                    <span class="fs-5"><?= money($order['total_amount']) ?></span>
+                    <h2 class="fm-display-group-name"><?= h($order['group_name']) ?></h2>
+                    <span class="fs-4 fw-bold text-info"><?= money($order['total_amount']) ?></span>
                 </div>
                 <p class="fs-5 mb-2"><?= h($order['items']) ?></p>
                 <div class="text-light-emphasis">เหลือ <?= money($order['balance_after']) ?> • <?= h($order['created_at']) ?></div>
@@ -43,4 +49,7 @@ require_once __DIR__ . '/../includes/header.php';
         </div>
     <?php endforeach; ?>
 </div>
+<?php if (!$orders): ?>
+    <div class="display-card p-5 text-center fs-3">ยังไม่มีความเคลื่อนไหว</div>
+<?php endif; ?>
 <?php require_once __DIR__ . '/../includes/footer.php'; ?>

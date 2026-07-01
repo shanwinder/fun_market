@@ -20,8 +20,8 @@ require_once __DIR__ . '/../includes/header.php';
 ?>
 <div class="row justify-content-center">
     <div class="col-lg-7">
-        <div class="panel p-4">
-            <h1 class="h3 fw-bold mb-3"><?= h($pageTitle) ?></h1>
+        <div class="fm-form-section">
+            <h1 class="h3 fw-bold mb-3"><i data-lucide="users" class="me-2"></i><?= h($pageTitle) ?></h1>
             <?php if (!$activity): ?>
                 <div class="alert alert-info">กรุณาสร้างกิจกรรมก่อน</div>
             <?php else: ?>
@@ -54,8 +54,8 @@ require_once __DIR__ . '/../includes/header.php';
                         </div>
                     <?php endif; ?>
                     <div class="d-flex gap-2 mt-4">
-                        <button class="btn btn-primary">บันทึก</button>
-                        <a class="btn btn-outline-secondary" href="<?= h(url('teacher/groups.php')) ?>">กลับ</a>
+                        <button class="btn btn-primary fm-btn-icon"><i data-lucide="save"></i>บันทึก</button>
+                        <a class="btn btn-outline-secondary fm-btn-icon" href="<?= h(url('teacher/groups.php')) ?>"><i data-lucide="arrow-left"></i>กลับ</a>
                     </div>
                 </form>
             <?php endif; ?>
@@ -63,4 +63,3 @@ require_once __DIR__ . '/../includes/header.php';
     </div>
 </div>
 <?php require_once __DIR__ . '/../includes/footer.php'; ?>
-

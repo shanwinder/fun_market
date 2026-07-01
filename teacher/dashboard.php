@@ -74,19 +74,59 @@ require_once __DIR__ . '/../includes/header.php';
     <div class="alert alert-info">เริ่มต้นด้วยการสร้างกิจกรรมแรก</div>
 <?php else: ?>
     <div class="row g-3 mb-4">
-        <div class="col-md-3"><div class="stat-card"><div class="text-muted">จำนวนกลุ่ม</div><div class="stat-value"><?= $stats['groups'] ?></div></div></div>
-        <div class="col-md-3"><div class="stat-card"><div class="text-muted">จำนวนสินค้า</div><div class="stat-value"><?= $stats['products'] ?></div></div></div>
-        <div class="col-md-3"><div class="stat-card"><div class="text-muted">ยอดซื้อรวม</div><div class="stat-value"><?= money($stats['orders_total']) ?></div></div></div>
-        <div class="col-md-3"><div class="stat-card"><div class="text-muted">จำนวนชิ้นที่ซื้อ</div><div class="stat-value"><?= $stats['items_total'] ?></div></div></div>
+        <div class="col-md-3">
+            <div class="fm-stat-card fm-stat-card-groups" role="status" aria-label="จำนวนกลุ่ม">
+                <div class="d-flex justify-content-between align-items-start">
+                    <div>
+                        <div class="fm-stat-label">จำนวนกลุ่ม</div>
+                        <div class="fm-stat-value" data-count="<?= h((string) $stats['groups']) ?>">0</div>
+                    </div>
+                    <div class="fm-stat-icon fm-stat-icon-groups"><i data-lucide="users"></i></div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="fm-stat-card fm-stat-card-products" role="status" aria-label="จำนวนสินค้า">
+                <div class="d-flex justify-content-between align-items-start">
+                    <div>
+                        <div class="fm-stat-label">จำนวนสินค้า</div>
+                        <div class="fm-stat-value" data-count="<?= h((string) $stats['products']) ?>">0</div>
+                    </div>
+                    <div class="fm-stat-icon fm-stat-icon-products"><i data-lucide="shopping-bag"></i></div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="fm-stat-card fm-stat-card-orders" role="status" aria-label="ยอดซื้อรวม">
+                <div class="d-flex justify-content-between align-items-start">
+                    <div>
+                        <div class="fm-stat-label">ยอดซื้อรวม</div>
+                        <div class="fm-stat-value" data-count="<?= h((string) $stats['orders_total']) ?>" data-money="true">0.00 บาท</div>
+                    </div>
+                    <div class="fm-stat-icon fm-stat-icon-orders"><i data-lucide="coins"></i></div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="fm-stat-card fm-stat-card-items" role="status" aria-label="จำนวนชิ้นที่ซื้อ">
+                <div class="d-flex justify-content-between align-items-start">
+                    <div>
+                        <div class="fm-stat-label">จำนวนชิ้นที่ซื้อ</div>
+                        <div class="fm-stat-value" data-count="<?= h((string) $stats['items_total']) ?>">0</div>
+                    </div>
+                    <div class="fm-stat-icon fm-stat-icon-items"><i data-lucide="package-check"></i></div>
+                </div>
+            </div>
+        </div>
     </div>
 
-    <div class="panel p-3 mb-4">
-        <div class="d-flex justify-content-between align-items-center mb-3">
+    <div class="fm-panel mb-4">
+        <div class="fm-panel-header">
             <h2 class="h4 fw-bold mb-0">ภาพรวมกลุ่ม</h2>
-            <a class="btn btn-sm btn-outline-primary" href="<?= h(url('teacher/groups.php')) ?>">จัดการกลุ่ม</a>
+            <a class="btn btn-sm btn-outline-primary fm-btn-icon" href="<?= h(url('teacher/groups.php')) ?>"><i data-lucide="settings"></i>จัดการกลุ่ม</a>
         </div>
-        <div class="table-responsive">
-            <table class="table align-middle" data-table>
+        <div class="table-responsive fm-panel-body">
+            <table class="table align-middle fm-table" data-table>
                 <thead>
                 <tr>
                     <th>กลุ่ม</th>
@@ -107,7 +147,7 @@ require_once __DIR__ . '/../includes/header.php';
                         <td class="text-end fw-bold"><?= money($group['current_balance']) ?></td>
                         <td class="text-end"><?= (int) $group['item_count'] ?></td>
                         <td><?= h($group['latest_at'] ?: '-') ?></td>
-                        <td><a class="btn btn-sm btn-outline-secondary" href="<?= h(url('teacher/group_detail.php?id=' . $group['id'])) ?>">ดู</a></td>
+                        <td><a class="btn btn-sm btn-outline-secondary fm-btn-icon" href="<?= h(url('teacher/group_detail.php?id=' . $group['id'])) ?>"><i data-lucide="eye"></i>ดู</a></td>
                     </tr>
                 <?php endforeach; ?>
                 </tbody>
@@ -115,11 +155,12 @@ require_once __DIR__ . '/../includes/header.php';
         </div>
     </div>
 
-    <div class="panel p-3">
-        <div class="d-flex justify-content-between align-items-center mb-3">
+    <div class="fm-panel">
+        <div class="fm-panel-header">
             <h2 class="h4 fw-bold mb-0">รายการซื้อล่าสุด</h2>
-            <a class="btn btn-sm btn-outline-primary" href="<?= h(url('teacher/live_orders.php')) ?>">ดูแบบสด</a>
+            <a class="btn btn-sm btn-outline-primary fm-btn-icon" href="<?= h(url('teacher/live_orders.php')) ?>"><i data-lucide="radio"></i>ดูแบบสด</a>
         </div>
+        <div class="fm-panel-body">
         <?php if (!$latestOrders): ?>
             <p class="text-muted mb-0">ยังไม่มีการซื้อ</p>
         <?php else: ?>
@@ -132,7 +173,7 @@ require_once __DIR__ . '/../includes/header.php';
                 <?php endforeach; ?>
             </div>
         <?php endif; ?>
+        </div>
     </div>
 <?php endif; ?>
 <?php require_once __DIR__ . '/../includes/footer.php'; ?>
-

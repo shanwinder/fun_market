@@ -13,14 +13,16 @@ require_once __DIR__ . '/../includes/header.php';
     <div class="col-lg-7">
         <div class="text-center mb-3">
             <h1 class="page-title">สแกนสินค้า</h1>
-            <div class="money-badge">เงินคงเหลือ: <?= money($group['current_balance']) ?></div>
+            <div class="money-badge"><i data-lucide="wallet"></i>เงินคงเหลือ: <?= money($group['current_balance']) ?></div>
         </div>
-        <div class="panel p-3">
-            <div id="reader" style="width:100%;min-height:320px"></div>
+        <div class="fm-scanner-wrapper p-3">
+            <div class="fm-scanner-frame">
+                <div id="reader" style="width:100%;min-height:320px"></div>
+            </div>
             <p class="text-muted small mt-3 mb-0">ถ้ากล้องใช้ไม่ได้ สามารถใช้แอปกล้องของเครื่องสแกน QR Code ได้</p>
         </div>
         <div class="d-grid mt-3">
-            <a class="btn btn-outline-secondary btn-lg" href="<?= h(url('student/home.php')) ?>">กลับหน้ากลุ่ม</a>
+            <a class="btn btn-outline-secondary btn-lg fm-btn-icon justify-content-center" href="<?= h(url('student/home.php')) ?>"><i data-lucide="arrow-left"></i>กลับหน้ากลุ่ม</a>
         </div>
     </div>
 </div>
@@ -39,4 +41,3 @@ require_once __DIR__ . '/../includes/header.php';
     });
 </script>
 <?php require_once __DIR__ . '/../includes/footer.php'; ?>
-

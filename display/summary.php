@@ -31,35 +31,35 @@ if ($activity) {
 }
 
 $pageTitle = 'จอรวม';
-$bodyClass = 'display-board';
+$bodyClass = 'display-board display-summary-page';
 require_once __DIR__ . '/../includes/header.php';
 ?>
-<div class="d-flex justify-content-between align-items-center mb-4">
+<div class="d-flex flex-wrap justify-content-between align-items-center gap-3 mb-4">
     <div>
         <h1 class="page-title mb-1"><?= $activity ? h($activity['title']) : 'ยังไม่มีกิจกรรม' ?></h1>
         <p class="text-light-emphasis mb-0">ภาพรวมทุกกลุ่ม รีเฟรชทุก 10 วินาที</p>
     </div>
-    <div class="display-card p-3 text-center">
+    <div class="fm-display-counter">
         <div class="text-light-emphasis">รายการซื้อทั้งหมด</div>
-        <div class="stat-value"><?= $totalOrders ?></div>
+        <div class="fm-display-counter-value" data-count="<?= h((string) $totalOrders) ?>">0</div>
     </div>
 </div>
 <?php if (!$activity): ?>
-    <div class="display-card p-4 text-center fs-3">รอครูเปิดกิจกรรม</div>
+    <div class="display-card p-5 text-center fs-3">รอครูเปิดกิจกรรม</div>
 <?php else: ?>
-    <div class="row g-3">
+    <div class="row g-3 fm-stagger">
         <?php foreach ($groups as $group): ?>
             <div class="col-md-6 col-xl-4">
                 <div class="display-card p-4 h-100">
                     <div class="d-flex justify-content-between align-items-start gap-3">
-                        <h2 class="h2 fw-bold mb-3"><?= h($group['group_name']) ?></h2>
+                        <h2 class="fm-display-group-name mb-3"><?= h($group['group_name']) ?></h2>
                         <span class="badge text-bg-info fs-6"><?= (int) $group['item_count'] ?> ชิ้น</span>
                     </div>
                     <div class="fs-5 text-light-emphasis">เงินคงเหลือ</div>
-                    <div class="display-5 fw-bold"><?= money($group['current_balance']) ?></div>
-                    <div class="progress mt-3" style="height: 14px">
-                        <?php $percent = ((float) $group['initial_budget'] > 0) ? max(0, min(100, ((float) $group['spent'] / (float) $group['initial_budget']) * 100)) : 0; ?>
-                        <div class="progress-bar" style="width: <?= h((string) $percent) ?>%"></div>
+                    <div class="fm-display-balance"><?= money($group['current_balance']) ?></div>
+                    <?php $percent = ((float) $group['initial_budget'] > 0) ? max(0, min(100, ((float) $group['spent'] / (float) $group['initial_budget']) * 100)) : 0; ?>
+                    <div class="fm-display-progress mt-3" role="progressbar" aria-valuenow="<?= h((string) round($percent, 2)) ?>" aria-valuemin="0" aria-valuemax="100">
+                        <div class="fm-display-progress-bar" style="width: <?= h((string) $percent) ?>%"></div>
                     </div>
                     <div class="d-flex justify-content-between mt-2 text-light-emphasis">
                         <span>ใช้ไป <?= money($group['spent']) ?></span>

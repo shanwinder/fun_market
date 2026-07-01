@@ -34,11 +34,11 @@ require_once __DIR__ . '/../includes/header.php';
         <h1 class="page-title mb-1">รายการซื้อแบบสด</h1>
         <p class="text-muted mb-0">รีเฟรชอัตโนมัติทุก 8 วินาที</p>
     </div>
-    <a class="btn btn-outline-secondary" href="<?= h(url('teacher/dashboard.php')) ?>">กลับ Dashboard</a>
+    <a class="btn btn-outline-secondary fm-btn-icon" href="<?= h(url('teacher/dashboard.php')) ?>"><i data-lucide="arrow-left"></i>กลับ Dashboard</a>
 </div>
 <div class="panel p-3">
     <div class="table-responsive">
-        <table class="table align-middle">
+        <table class="table align-middle fm-table">
             <thead><tr><th>เวลา</th><th>กลุ่ม</th><th>รายการ</th><th class="text-end">ยอดซื้อ</th><th class="text-end">คงเหลือ</th></tr></thead>
             <tbody>
             <?php foreach ($orders as $order): ?>

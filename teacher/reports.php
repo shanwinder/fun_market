@@ -71,9 +71,9 @@ require_once __DIR__ . '/../includes/header.php';
     </div>
     <div class="d-flex gap-2">
         <?php if ($activity): ?>
-            <a class="btn btn-outline-primary" href="<?= h(url('teacher/reports.php?export=csv')) ?>">Export CSV</a>
+            <a class="btn btn-outline-primary fm-btn-icon" href="<?= h(url('teacher/reports.php?export=csv')) ?>"><i data-lucide="download"></i>Export CSV</a>
         <?php endif; ?>
-        <button class="btn btn-primary" onclick="window.print()">พิมพ์รายงาน</button>
+        <button class="btn btn-primary fm-btn-icon" onclick="window.print()"><i data-lucide="printer"></i>พิมพ์รายงาน</button>
     </div>
 </div>
 <?php if (!$activity): ?>
@@ -81,7 +81,7 @@ require_once __DIR__ . '/../includes/header.php';
 <?php else: ?>
     <div class="row g-4 mb-4">
         <div class="col-lg-7">
-            <div class="panel p-3 h-100">
+            <div class="fm-chart-container h-100">
                 <h2 class="h4 fw-bold mb-3">ยอดใช้เงินรายกลุ่ม</h2>
                 <canvas id="spentChart" height="180"></canvas>
             </div>
@@ -90,7 +90,7 @@ require_once __DIR__ . '/../includes/header.php';
             <div class="panel p-3 h-100">
                 <h2 class="h4 fw-bold mb-3">สินค้าที่ถูกซื้อบ่อย</h2>
                 <div class="table-responsive">
-                    <table class="table align-middle mb-0">
+                    <table class="table align-middle fm-table mb-0">
                         <thead><tr><th>สินค้า</th><th class="text-end">จำนวน</th><th class="text-end">ยอดเงิน</th></tr></thead>
                         <tbody>
                         <?php foreach ($topProducts as $product): ?>
@@ -109,7 +109,7 @@ require_once __DIR__ . '/../includes/header.php';
     <div class="panel p-3">
         <h2 class="h4 fw-bold mb-3">สรุปรายกลุ่ม</h2>
         <div class="table-responsive">
-            <table class="table align-middle" data-table>
+            <table class="table align-middle fm-table" data-table>
                 <thead><tr><th>กลุ่ม</th><th class="text-end">เงินตั้งต้น</th><th class="text-end">ใช้ไป</th><th class="text-end">คงเหลือ</th><th class="text-end">จำนวนชิ้น</th></tr></thead>
                 <tbody>
                 <?php foreach ($groupSummary as $group): ?>
@@ -129,6 +129,10 @@ require_once __DIR__ . '/../includes/header.php';
         window.addEventListener('load', () => {
             const canvas = document.getElementById('spentChart');
             if (!canvas || !window.Chart) return;
+            const ctx = canvas.getContext('2d');
+            const gradient = ctx.createLinearGradient(0, 0, 0, 300);
+            gradient.addColorStop(0, 'rgba(99, 102, 241, 0.85)');
+            gradient.addColorStop(1, 'rgba(99, 102, 241, 0.22)');
             new Chart(canvas, {
                 type: 'bar',
                 data: {
@@ -136,13 +140,41 @@ require_once __DIR__ . '/../includes/header.php';
                     datasets: [{
                         label: 'ใช้ไป',
                         data: <?= json_encode(array_map('floatval', array_column($groupSummary, 'spent'))) ?>,
-                        backgroundColor: '#2f6fed'
+                        backgroundColor: gradient,
+                        borderColor: '#6366f1',
+                        borderWidth: 2,
+                        borderRadius: 8,
+                        borderSkipped: false,
+                        hoverBackgroundColor: '#818cf8'
                     }]
                 },
-                options: { responsive: true, plugins: { legend: { display: false } } }
+                options: {
+                    responsive: true,
+                    animation: { duration: 1200, easing: 'easeOutQuart' },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            grid: { color: '#f1f5f9' },
+                            ticks: { font: { family: 'Noto Sans Thai', weight: 500 } }
+                        },
+                        x: {
+                            grid: { display: false },
+                            ticks: { font: { family: 'Noto Sans Thai', weight: 600 } }
+                        }
+                    },
+                    plugins: {
+                        legend: { display: false },
+                        tooltip: {
+                            backgroundColor: '#1e293b',
+                            cornerRadius: 8,
+                            titleFont: { family: 'Noto Sans Thai', weight: 700 },
+                            bodyFont: { family: 'Noto Sans Thai' },
+                            padding: 12
+                        }
+                    }
+                }
             });
         });
     </script>
 <?php endif; ?>
 <?php require_once __DIR__ . '/../includes/footer.php'; ?>
-

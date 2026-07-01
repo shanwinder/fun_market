@@ -23,27 +23,31 @@ require_once __DIR__ . '/../includes/header.php';
 <div class="row justify-content-center">
     <div class="col-lg-8">
         <h1 class="page-title mb-3">ประวัติของ <?= h($group['group_name']) ?></h1>
-        <div class="money-badge mb-3">เงินคงเหลือ: <?= money($group['current_balance']) ?></div>
+        <div class="money-badge mb-3"><i data-lucide="wallet"></i>เงินคงเหลือ: <?= money($group['current_balance']) ?></div>
         <?php if (!$orders): ?>
-            <div class="panel p-4 text-center text-muted fs-4">ยังไม่มีประวัติการซื้อ</div>
+            <div class="fm-panel p-5 text-center text-muted fs-4">
+                <i data-lucide="receipt-text" class="text-primary mb-3" style="width:52px;height:52px"></i>
+                <div>ยังไม่มีประวัติการซื้อ</div>
+            </div>
         <?php else: ?>
-            <div class="list-group">
+            <div class="fm-stagger">
                 <?php foreach ($orders as $order): ?>
-                    <div class="list-group-item p-3">
+                    <div class="fm-history-item">
+                        <div class="fm-history-card">
                         <div class="d-flex justify-content-between gap-3">
                             <strong><?= money($order['total_amount']) ?></strong>
                             <span class="text-muted"><?= h($order['created_at']) ?></span>
                         </div>
                         <div class="mt-2"><?= h($order['items']) ?></div>
                         <div class="text-success mt-1">เหลือ <?= money($order['balance_after']) ?></div>
+                        </div>
                     </div>
                 <?php endforeach; ?>
             </div>
         <?php endif; ?>
         <div class="d-grid mt-3">
-            <a class="btn btn-outline-secondary btn-lg" href="<?= h(url('student/home.php')) ?>">กลับหน้ากลุ่ม</a>
+            <a class="btn btn-outline-secondary btn-lg fm-btn-icon justify-content-center" href="<?= h(url('student/home.php')) ?>"><i data-lucide="arrow-left"></i>กลับหน้ากลุ่ม</a>
         </div>
     </div>
 </div>
 <?php require_once __DIR__ . '/../includes/footer.php'; ?>
-

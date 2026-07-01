@@ -20,8 +20,8 @@ require_once __DIR__ . '/../includes/header.php';
 ?>
 <div class="row justify-content-center">
     <div class="col-lg-8">
-        <div class="panel p-4">
-            <h1 class="h3 fw-bold mb-3"><?= h($pageTitle) ?></h1>
+        <div class="fm-form-section">
+            <h1 class="h3 fw-bold mb-3"><i data-lucide="shopping-bag" class="me-2"></i><?= h($pageTitle) ?></h1>
             <?php if (!$activity): ?>
                 <div class="alert alert-info">กรุณาสร้างกิจกรรมก่อน</div>
             <?php else: ?>
@@ -49,10 +49,16 @@ require_once __DIR__ . '/../includes/header.php';
                     </div>
                     <div class="mb-3">
                         <label class="form-label">รูปสินค้า</label>
-                        <input class="form-control" type="file" name="image" accept=".jpg,.jpeg,.png,.webp">
-                        <?php if (!empty($product['image_path'])): ?>
-                            <img class="mt-2" src="<?= h(product_image_url($product['image_path'])) ?>" alt="" style="width:160px;height:120px;object-fit:cover;border-radius:8px">
-                        <?php endif; ?>
+                        <div class="fm-image-upload">
+                            <div class="d-flex align-items-center gap-3">
+                                <i data-lucide="image-up" class="text-primary" style="width:36px;height:36px"></i>
+                                <div class="flex-grow-1">
+                                    <input class="form-control" type="file" name="image" accept=".jpg,.jpeg,.png,.webp" data-image-preview="productPreview">
+                                    <div class="form-text">รองรับ JPG, PNG, WEBP</div>
+                                </div>
+                            </div>
+                            <img id="productPreview" class="fm-image-preview mt-3" src="<?= h(!empty($product['image_path']) ? product_image_url($product['image_path']) : '') ?>" alt="" <?= empty($product['image_path']) ? 'hidden' : '' ?>>
+                        </div>
                     </div>
                     <div class="mb-3">
                         <label class="form-label">บันทึกสำหรับครู</label>
@@ -64,8 +70,8 @@ require_once __DIR__ . '/../includes/header.php';
                         <label class="form-check-label">เปิดขาย</label>
                     </div>
                     <div class="d-flex gap-2 mt-4">
-                        <button class="btn btn-primary">บันทึก</button>
-                        <a class="btn btn-outline-secondary" href="<?= h(url('teacher/products.php')) ?>">กลับ</a>
+                        <button class="btn btn-primary fm-btn-icon"><i data-lucide="save"></i>บันทึก</button>
+                        <a class="btn btn-outline-secondary fm-btn-icon" href="<?= h(url('teacher/products.php')) ?>"><i data-lucide="arrow-left"></i>กลับ</a>
                     </div>
                 </form>
             <?php endif; ?>
@@ -73,4 +79,3 @@ require_once __DIR__ . '/../includes/header.php';
     </div>
 </div>
 <?php require_once __DIR__ . '/../includes/footer.php'; ?>
-
