@@ -50,6 +50,9 @@ require_once __DIR__ . '/../includes/header.php';
                     <button class="btn btn-outline-primary btn-lg fm-btn-icon"><i data-lucide="refresh-cw"></i>ปรับจำนวน</button>
                 </div>
             </form>
+            <div class="d-grid mb-3">
+                <a class="btn btn-primary btn-lg student-action fm-btn-icon" href="<?= h(url('student/scan.php')) ?>"><i data-lucide="scan-line"></i>สแกนสินค้าต่อ</a>
+            </div>
             <form method="post" action="<?= h(url('actions/clear_cart.php')) ?>" class="mb-3">
                 <?= csrf_field() ?>
                 <button class="btn btn-outline-danger btn-lg w-100 fm-btn-icon justify-content-center"><i data-lucide="trash-2"></i>ล้างตะกร้า</button>

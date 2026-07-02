@@ -12,11 +12,17 @@ function db(): PDO
         return $pdo;
     }
 
-    $host = getenv('DB_HOST') ?: '127.0.0.1';
+/*  $host = getenv('DB_HOST') ?: '127.0.0.1';
     $port = getenv('DB_PORT') ?: '8889';
     $database = getenv('DB_DATABASE') ?: 'fun_market';
     $username = getenv('DB_USERNAME') ?: 'root';
     $password = getenv('DB_PASSWORD') ?: 'root';
+*/
+    $host = getenv('DB_HOST') ?: 'sql110.infinityfree.com';
+    $port = getenv('DB_PORT') ?: '3306';
+    $database = getenv('DB_DATABASE') ?: 'if0_42311603_fun_market';
+    $username = getenv('DB_USERNAME') ?: 'if0_42311603';
+    $password = getenv('DB_PASSWORD') ?: 'HEjKDEcKIS';
 
     $dsn = sprintf('mysql:host=%s;port=%s;dbname=%s;charset=utf8mb4', $host, $port, $database);
     $pdo = new PDO($dsn, $username, $password, [
