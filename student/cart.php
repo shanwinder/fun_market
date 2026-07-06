@@ -8,7 +8,15 @@ require_once __DIR__ . '/../includes/csrf.php';
 $group = require_student_group();
 $cart = get_or_create_open_cart((int) $group['activity_id'], (int) $group['id']);
 $items = cart_items((int) $cart['id']);
-$total = cart_total($items);
+$hasUnavailable = false;
+$total = 0.0;
+foreach ($items as $item) {
+    $isAvailable = (int) $item['is_active'] === 1 && (int) $item['product_activity_id'] === (int) $group['activity_id'];
+    $hasUnavailable = $hasUnavailable || !$isAvailable;
+    if ($isAvailable) {
+        $total += (float) $item['price'] * (int) $item['quantity'];
+    }
+}
 $after = (float) $group['current_balance'] - $total;
 
 $pageTitle = 'ตะกร้าสินค้า';
@@ -34,15 +42,23 @@ require_once __DIR__ . '/../includes/header.php';
             <form method="post" action="<?= h(url('actions/update_cart.php')) ?>" class="fm-panel mb-3">
                 <?= csrf_field() ?>
                 <?php foreach ($items as $item): ?>
-                    <div class="fm-cart-item">
+                    <?php $isAvailable = (int) $item['is_active'] === 1 && (int) $item['product_activity_id'] === (int) $group['activity_id']; ?>
+                    <div class="fm-cart-item <?= $isAvailable ? '' : 'is-unavailable' ?>">
                         <img class="fm-cart-item-img" src="<?= h(product_image_url($item['image_path'])) ?>" alt="" loading="lazy" decoding="async">
                         <div>
                             <div class="fw-bold fs-5"><?= h($item['product_name']) ?></div>
-                            <div class="text-muted"><?= money($item['price']) ?> ต่อชิ้น</div>
+                            <?php if ($isAvailable): ?>
+                                <div class="text-muted"><?= money($item['price']) ?> ต่อชิ้น</div>
+                            <?php else: ?>
+                                <div class="badge text-bg-warning">สินค้านี้ไม่พร้อมขายแล้ว</div>
+                            <?php endif; ?>
                         </div>
-                        <div class="d-flex align-items-center gap-3">
+                        <div class="fm-cart-controls">
                             <input class="form-control form-control-lg text-center" style="width:92px" type="number" min="0" max="99" name="qty[<?= h($item['id']) ?>]" value="<?= h($item['quantity']) ?>" aria-label="จำนวน <?= h($item['product_name']) ?>">
-                            <div class="fw-bold fm-cart-line-total"><?= money((float) $item['price'] * (int) $item['quantity']) ?></div>
+                            <div class="fw-bold fm-cart-line-total"><?= $isAvailable ? money((float) $item['price'] * (int) $item['quantity']) : '-' ?></div>
+                            <button class="btn btn-outline-danger btn-lg fm-btn-icon" type="submit" name="remove_item" value="<?= h($item['id']) ?>" aria-label="ลบ <?= h($item['product_name']) ?>">
+                                <i data-lucide="trash-2"></i>ลบ
+                            </button>
                         </div>
                     </div>
                 <?php endforeach; ?>
@@ -58,15 +74,17 @@ require_once __DIR__ . '/../includes/header.php';
                 <button class="btn btn-outline-danger btn-lg w-100 fm-btn-icon justify-content-center"><i data-lucide="trash-2"></i>ล้างตะกร้า</button>
             </form>
             <div class="fm-cart-summary">
-                <div class="fm-cart-total-row fs-4"><span>รวมทั้งหมด</span><strong><?= money($total) ?></strong></div>
+                <div class="fm-cart-total-row fs-4"><span>รวมรายการที่พร้อมซื้อ</span><strong><?= money($total) ?></strong></div>
                 <div class="fm-cart-total-row"><span>เงินคงเหลือปัจจุบัน</span><strong><?= money($group['current_balance']) ?></strong></div>
                 <div class="fm-cart-total-row highlight"><span>หลังซื้อจะเหลือ</span><strong class="<?= $after < 0 ? 'text-danger' : 'text-success' ?>"><?= money($after) ?></strong></div>
                 <form method="post" action="<?= h(url('actions/checkout.php')) ?>" class="d-grid mt-4">
                     <?= csrf_field() ?>
-                    <button class="btn btn-success btn-lg student-action fm-btn-icon" <?= $after < 0 ? 'disabled' : '' ?>><i data-lucide="check-circle-2"></i>ยืนยันซื้อ</button>
+                    <button class="btn btn-success btn-lg student-action fm-btn-icon" <?= ($after < 0 || $hasUnavailable) ? 'disabled' : '' ?>><i data-lucide="check-circle-2"></i>ยืนยันซื้อ</button>
                 </form>
                 <?php if ($after < 0): ?>
                     <div class="alert alert-warning mt-3 mb-0">เงินของกลุ่มไม่เพียงพอ กรุณาปรับรายการในตะกร้า</div>
+                <?php elseif ($hasUnavailable): ?>
+                    <div class="alert alert-warning mt-3 mb-0">มีสินค้าในตะกร้าที่ไม่พร้อมขาย กรุณาลบสินค้านั้นออกก่อนยืนยันซื้อ</div>
                 <?php endif; ?>
             </div>
         <?php endif; ?>

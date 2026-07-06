@@ -9,6 +9,15 @@ verify_csrf();
 $group = require_student_group();
 $cart = get_or_create_open_cart((int) $group['activity_id'], (int) $group['id']);
 $quantities = $_POST['qty'] ?? [];
+$removeItemId = (int) ($_POST['remove_item'] ?? 0);
+
+if ($removeItemId > 0) {
+    $stmt = db()->prepare('DELETE FROM cart_items WHERE id = ? AND cart_id = ?');
+    $stmt->execute([$removeItemId, $cart['id']]);
+
+    flash('success', 'ลบสินค้าออกจากตะกร้าแล้ว');
+    redirect('student/cart.php');
+}
 
 foreach ($quantities as $itemId => $qty) {
     $itemId = (int) $itemId;
@@ -24,4 +33,3 @@ foreach ($quantities as $itemId => $qty) {
 
 flash('success', 'ปรับตะกร้าแล้ว');
 redirect('student/cart.php');
-

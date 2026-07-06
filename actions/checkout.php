@@ -31,12 +31,14 @@ try {
     }
 
     $stmt = $pdo->prepare(
-        "SELECT ci.product_id, ci.quantity, p.product_name, p.price
+        "SELECT ci.product_id, ci.quantity, p.id AS matched_product_id, p.activity_id AS product_activity_id,
+                p.product_name, p.price, p.is_active
          FROM cart_items ci
-         JOIN products p ON p.id = ci.product_id
-         WHERE ci.cart_id = ? AND p.activity_id = ? AND p.is_active = 1"
+         LEFT JOIN products p ON p.id = ci.product_id
+         WHERE ci.cart_id = ?
+         ORDER BY ci.id ASC"
     );
-    $stmt->execute([$cart['id'], $lockedGroup['activity_id']]);
+    $stmt->execute([$cart['id']]);
     $items = $stmt->fetchAll();
     if (!$items) {
         throw new RuntimeException('ยังไม่มีสินค้าในตะกร้า');
@@ -44,6 +46,14 @@ try {
 
     $total = 0.0;
     foreach ($items as $item) {
+        if (
+            empty($item['matched_product_id'])
+            || (int) $item['product_activity_id'] !== (int) $lockedGroup['activity_id']
+            || (int) $item['is_active'] !== 1
+        ) {
+            throw new RuntimeException('มีสินค้าในตะกร้าที่ไม่พร้อมขาย กรุณาลบสินค้านั้นออกก่อนยืนยันซื้อ');
+        }
+
         $total += (float) $item['price'] * (int) $item['quantity'];
     }
 
@@ -87,4 +97,3 @@ try {
     flash('warning', $e->getMessage());
     redirect('student/cart.php');
 }
-

@@ -121,7 +121,7 @@ function get_or_create_open_cart(int $activityId, int $groupId): array
 function cart_items(int $cartId): array
 {
     $stmt = db()->prepare(
-        'SELECT ci.*, p.product_name, p.price, p.image_path, p.is_active
+        'SELECT ci.*, p.activity_id AS product_activity_id, p.product_name, p.price, p.image_path, p.is_active
          FROM cart_items ci
          JOIN products p ON p.id = ci.product_id
          WHERE ci.cart_id = ?
