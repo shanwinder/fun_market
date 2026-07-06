@@ -26,7 +26,7 @@ $navItems = $teacher ? [
     ['teacher/qrcodes.php', 'qr-code', 'QR Code', []],
     ['teacher/reports.php', 'bar-chart-3', 'รายงาน', []],
 ] : [
-    ['student/join.php', 'graduation-cap', 'นักเรียน', ['student/home.php', 'student/scan.php', 'student/product.php', 'student/cart.php', 'student/checkout.php', 'student/history.php']],
+    ['student/join.php', 'graduation-cap', 'นักเรียน', ['student/home.php', 'student/products.php', 'student/scan.php', 'student/product.php', 'student/cart.php', 'student/checkout.php', 'student/history.php']],
     ['display/summary.php', 'monitor', 'จอรวม', ['display/live.php', 'display/timer.php']],
 ];
 ?>

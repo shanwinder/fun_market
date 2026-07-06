@@ -7,6 +7,22 @@ require_once __DIR__ . '/../includes/csrf.php';
 
 verify_csrf();
 $group = require_student_group();
+if ($group['activity_status'] !== 'active' || !$group['is_active']) {
+    unset($_SESSION['student_group_id']);
+    flash('warning', 'กิจกรรมนี้ยังไม่เปิดหรือถูกปิดแล้ว');
+    redirect('student/join.php');
+}
+
+$returnTo = (string) ($_POST['return_to'] ?? 'student/cart.php');
+$allowedReturns = [
+    'student/cart.php',
+    'student/products.php',
+    'student/scan.php',
+];
+if (!in_array($returnTo, $allowedReturns, true)) {
+    $returnTo = 'student/cart.php';
+}
+
 $productId = (int) ($_POST['product_id'] ?? 0);
 $quantity = max(1, min(20, (int) ($_POST['quantity'] ?? 1)));
 
@@ -20,7 +36,7 @@ $stmt->execute([$productId, $group['activity_id']]);
 $product = $stmt->fetch();
 if (!$product) {
     flash('warning', 'ไม่สามารถเพิ่มสินค้านี้ได้');
-    redirect('student/home.php');
+    redirect($returnTo);
 }
 
 $cart = get_or_create_open_cart((int) $group['activity_id'], (int) $group['id']);
@@ -32,5 +48,4 @@ $stmt = db()->prepare(
 $stmt->execute([$cart['id'], $productId, $quantity]);
 
 flash('success', 'เพิ่มลงตะกร้าแล้ว');
-redirect('student/cart.php');
-
+redirect($returnTo);

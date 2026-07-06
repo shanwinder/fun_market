@@ -13,19 +13,30 @@ FROM (
 WHERE @activity_id IS NOT NULL
 ON DUPLICATE KEY UPDATE public_token = student_groups.public_token;
 
+DELETE FROM products WHERE activity_id = @activity_id;
+
 INSERT INTO products (activity_id, product_name, description, price, qr_token, is_active, sort_order)
-SELECT @activity_id, product_name, description, price, qr_token, 1, sort_order
+SELECT @activity_id, product_name, description, price, CONCAT('product-a', @activity_id, '-', token_suffix), 1, sort_order
 FROM (
-    SELECT 'ข้าวสวย' AS product_name, 'ข้าวสวยร้อน ๆ' AS description, 10.00 AS price, 'product-rice' AS qr_token, 10 AS sort_order
-    UNION ALL SELECT 'ไข่ต้ม', 'ไข่ต้มพร้อมรับประทาน', 8.00, 'product-egg', 20
-    UNION ALL SELECT 'นมจืด', 'นมกล่องรสจืด', 12.00, 'product-milk', 30
-    UNION ALL SELECT 'กล้วย', 'กล้วยหอม 1 ผล', 6.00, 'product-banana', 40
-    UNION ALL SELECT 'หมูทอด', 'หมูทอดชิ้นพอดีคำ', 15.00, 'product-pork', 50
-    UNION ALL SELECT 'ปลาย่าง', 'ปลาย่างชิ้นเล็ก', 18.00, 'product-fish', 60
-    UNION ALL SELECT 'ผักต้ม', 'ผักต้ม 1 จาน', 7.00, 'product-vegetable', 70
-    UNION ALL SELECT 'น้ำเปล่า', 'น้ำดื่ม 1 ขวด', 5.00, 'product-water', 80
-    UNION ALL SELECT 'แอปเปิล', 'แอปเปิล 1 ผล', 10.00, 'product-apple', 90
-    UNION ALL SELECT 'ขนมปัง', 'ขนมปัง 1 แผ่น', 9.00, 'product-bread', 100
+    SELECT 'เนื้อปลา' AS product_name, NULL AS description, 50.00 AS price, '01' AS token_suffix, 10 AS sort_order
+    UNION ALL SELECT 'เนื้อไก่', NULL, 50.00, '02', 20
+    UNION ALL SELECT 'เนื้อหมู', NULL, 50.00, '03', 30
+    UNION ALL SELECT 'ปลาทู', NULL, 50.00, '04', 40
+    UNION ALL SELECT 'กุ้ง', NULL, 50.00, '05', 50
+    UNION ALL SELECT 'หมึก', NULL, 50.00, '06', 60
+    UNION ALL SELECT 'มะละกอ', NULL, 20.00, '07', 70
+    UNION ALL SELECT 'ข้าว', NULL, 20.00, '08', 80
+    UNION ALL SELECT 'แครอท', NULL, 20.00, '09', 90
+    UNION ALL SELECT 'น้ำมัน', NULL, 20.00, '10', 100
+    UNION ALL SELECT 'คะน้า', NULL, 20.00, '11', 110
+    UNION ALL SELECT 'ตำลึง', NULL, 20.00, '12', 120
+    UNION ALL SELECT 'เนย', NULL, 20.00, '13', 130
+    UNION ALL SELECT 'นม', NULL, 20.00, '14', 140
+    UNION ALL SELECT 'น้ำตาล', NULL, 20.00, '15', 150
+    UNION ALL SELECT 'ไข่', NULL, 20.00, '16', 160
+    UNION ALL SELECT 'กระเพรา', NULL, 20.00, '17', 170
+    UNION ALL SELECT 'กระเทียม', NULL, 20.00, '18', 180
+    UNION ALL SELECT 'มะนาว', NULL, 20.00, '19', 190
 ) seed
 WHERE @activity_id IS NOT NULL
 ON DUPLICATE KEY UPDATE qr_token = products.qr_token;

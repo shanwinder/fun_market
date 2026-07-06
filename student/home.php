@@ -43,6 +43,10 @@ require_once __DIR__ . '/../includes/header.php';
                 <i data-lucide="scan-line"></i>
                 สแกน QR Code
             </a>
+            <a class="fm-student-btn fm-student-btn-products" href="<?= h(url('student/products.php')) ?>">
+                <i data-lucide="store"></i>
+                เลือกซื้อสินค้า
+            </a>
             <a class="fm-student-btn fm-student-btn-cart" href="<?= h(url('student/cart.php')) ?>">
                 <i data-lucide="shopping-cart"></i>
                 ดูตะกร้า

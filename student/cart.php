@@ -36,7 +36,10 @@ require_once __DIR__ . '/../includes/header.php';
             <div class="fm-panel p-5 text-center">
                 <i data-lucide="shopping-basket" class="text-primary mb-3" style="width:56px;height:56px"></i>
                 <p class="fs-4 text-muted">ยังไม่มีสินค้าในตะกร้า</p>
-                <a class="btn btn-primary btn-lg student-action fm-btn-icon" href="<?= h(url('student/scan.php')) ?>"><i data-lucide="scan-line"></i>สแกนสินค้า</a>
+                <div class="d-grid gap-2 col-md-8 mx-auto">
+                    <a class="btn btn-primary btn-lg student-action fm-btn-icon" href="<?= h(url('student/products.php')) ?>"><i data-lucide="store"></i>เลือกซื้อสินค้า</a>
+                    <a class="btn btn-outline-primary btn-lg fm-btn-icon justify-content-center" href="<?= h(url('student/scan.php')) ?>"><i data-lucide="scan-line"></i>สแกนสินค้า</a>
+                </div>
             </div>
         <?php else: ?>
             <form method="post" action="<?= h(url('actions/update_cart.php')) ?>" class="fm-panel mb-3">
@@ -67,7 +70,10 @@ require_once __DIR__ . '/../includes/header.php';
                 </div>
             </form>
             <div class="d-grid mb-3">
-                <a class="btn btn-primary btn-lg student-action fm-btn-icon" href="<?= h(url('student/scan.php')) ?>"><i data-lucide="scan-line"></i>สแกนสินค้าต่อ</a>
+                <a class="btn btn-primary btn-lg student-action fm-btn-icon" href="<?= h(url('student/products.php')) ?>"><i data-lucide="store"></i>เลือกซื้อสินค้าเพิ่ม</a>
+            </div>
+            <div class="d-grid mb-3">
+                <a class="btn btn-outline-primary btn-lg fm-btn-icon justify-content-center" href="<?= h(url('student/scan.php')) ?>"><i data-lucide="scan-line"></i>สแกนสินค้าต่อ</a>
             </div>
             <form method="post" action="<?= h(url('actions/clear_cart.php')) ?>" class="mb-3">
                 <?= csrf_field() ?>
